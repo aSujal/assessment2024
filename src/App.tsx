@@ -1,22 +1,64 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
-import { Button } from './components/ui/button'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from './components/ui/tabs'
+import useKategorien from './hooks/useKategorien'
+import useProjekte from './hooks/useProjekte'
+import useGeldeinlagen from './hooks/useGeldeinlagen'
+import ProjektSelectionBar from './components/ProjektSelectionBar'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [selectedProjektId, setSelectedProjektId] = useState<string>('')
+
+  const { data: projekte, loading: projekteLoading } = useProjekte()
+  const { data: kategorien, loading: kategorienLoading } = useKategorien()
+  const { getByProjektId, save, update } = useGeldeinlagen()
+
+  if (projekteLoading || kategorienLoading) {
+    return <div className="flex justify-center items-center h-screen text-2xl text-muted-foreground">Laden...</div>
+  }
+
+  const effectiveId = selectedProjektId || (projekte.length > 0 ? projekte[0].id : '')
 
   return (
-    <section className='flex items-center justify-center flex-col gap-3 h-screen'>
-      <div className='bg-primary w-20 h-20 flex items-center rounded-md'>
-        <span className='tracking-tighter text-accent'>Tailwind test</span>
-      </div>
-      <Button className='cursor-pointer' onClick={() => setCount(prev => prev + 1)}>
-        Count {count}
-      </Button>
-    </section>
+    <div className="min-h-screen bg-background">
+      <header className="p-3 flex justify-center w-full text-lg">
+        Valemus Assessment
+      </header>
+
+      <ProjectSelectionBar
+        projekte={projekte}
+        selectedProjektId={effectiveId}
+        onSelect={setSelectedProjektId}
+      />
+
+      <main className="py-3 px-6">
+        <Tabs defaultValue="finanzierung" className="w-full">
+          <TabsList className="w-full">
+            <TabsTrigger className="cursor-pointer" value="finanzierung">
+              Finanzierung
+            </TabsTrigger>
+            <TabsTrigger className="cursor-pointer" value="aufgaben">
+              Aufgabenplanung
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="finanzierung">
+            test finanzierung
+          </TabsContent>
+
+          <TabsContent value="aufgaben">
+            <div className="flex flex-col gap-2 py-4">
+              <h2 className="text-xl">Aufgabenplanung</h2>
+              <p className='text-muted-foreground text-sm leading-relaxed'>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Pariatur, saepe adipisci suscipit vero quae aut nobis enim,
+                nulla optio delectus molestiae nesciunt odit architecto recusandae
+                eos porro at voluptatum minima.
+              </p>
+            </div>
+          </TabsContent>
+        </Tabs>
+      </main>
+    </div>
   )
 }
 

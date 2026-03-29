@@ -1,0 +1,25 @@
+import { useCallback, useState } from "react";
+
+const useGeldeinlagen = () => {
+    const [geldeinlagen, setGeldeinlagen] = useState<Geldinlage[]>([]);
+
+    const getByProjektId = useCallback((projektId: string): Geldinlage[] => {
+        return geldeinlagen.filter((g) => g.projektId === projektId)
+    }, [geldeinlagen]);
+
+    const save = useCallback(async (deposit: Geldinlage): Promise<void> => {
+        await new Promise((resolve) => setTimeout(resolve, 300));
+        setGeldeinlagen((prev) => [...prev, deposit]);
+    }, []);
+
+    const update = useCallback(async (id: string, updatedData: Partial<Geldinlage>): Promise<void> => {
+        await new Promise((resolve) => setTimeout(resolve, 300));
+        setGeldeinlagen((prev) =>
+            prev.map((g) => (g.id === id ? { ...g, ...updatedData } : g))
+        );
+    }, []);
+
+    return { geldeinlagen, getByProjektId, save, update };
+};
+
+export default useGeldeinlagen;
