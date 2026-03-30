@@ -14,6 +14,10 @@ const useProjekte = () => {
                 if (!projekteRes) throw new Error("Fehler beim Laden der Daten.");
 
                 const projekteData: Projekt[] = await projekteRes.json();
+                if (projekteData.length > 0) {
+                    projekteData.sort((a, b) => a.name.localeCompare(b.name));
+                }
+
                 setData(projekteData ?? []);
             } catch (error) {
                 setError(error instanceof Error ? error.message : "Unbekannter Fehler");

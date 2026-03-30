@@ -22,3 +22,17 @@ interface Geldinlage {
     betrag: number;
     notizen: string;
 }
+
+interface GeldinlageFormData {
+    bezeichnung: string;
+    kategorieId: string;
+    datum: string;
+    geldgeber: string;
+    betrag: string;
+    notizen: string;
+}
+
+interface ValidationResult {
+    valid: boolean;
+    invalidFields: string[];
+}

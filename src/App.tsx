@@ -4,6 +4,7 @@ import useKategorien from './hooks/useKategorien'
 import useProjekte from './hooks/useProjekte'
 import useGeldeinlagen from './hooks/useGeldeinlagen'
 import ProjektSelectionBar from './components/ProjektSelectionBar'
+import FinanzierungTab from './components/FinanzierungTab'
 
 function App() {
   const [selectedProjektId, setSelectedProjektId] = useState<string>('')
@@ -24,7 +25,7 @@ function App() {
         Valemus Assessment
       </header>
 
-      <ProjectSelectionBar
+      <ProjektSelectionBar
         projekte={projekte}
         selectedProjektId={effectiveId}
         onSelect={setSelectedProjektId}
@@ -42,7 +43,13 @@ function App() {
           </TabsList>
 
           <TabsContent value="finanzierung">
-            test finanzierung
+            <FinanzierungTab
+              projektId={effectiveId}
+              kategorien={kategorien ?? []}
+              geldeinlagen={getByProjektId(effectiveId)}
+              onSave={save}
+              onUpdate={update}
+            />
           </TabsContent>
 
           <TabsContent value="aufgaben">
