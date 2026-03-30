@@ -72,7 +72,7 @@ function FinanzierungTab({
     return (
         <div className="py-4 flex flex-col gap-4">
             <div>
-                <Button className="cursor-pointer" onClick={handleNewDeposit} disabled={saving} id="new-deposit-button">
+                <Button onClick={handleNewDeposit} disabled={saving} id="new-deposit-button">
                     <Plus className="size-4" />
                     <span>Neue Geldeinlage erfassen</span>
                 </Button>

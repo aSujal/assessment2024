@@ -28,7 +28,8 @@ function GeldeinlagenTable({
     onEdit,
 }: GeldeinlagenTableProps) {
     const getKategorieName = (kategorieId: string): string => {
-        return kategorien.find((k) => k.id === kategorieId)?.name ?? "—";
+        // if (kategorieId === "leer") return "Leer-Eintrag";
+        return kategorien.find((k) => k.id === kategorieId)?.name ?? "-";
     };
 
     const hasNotes = (notizen: string): boolean => {
@@ -72,7 +73,7 @@ function GeldeinlagenTable({
                             <TableCell>
                                 {getKategorieName(einlage.kategorieId)}
                             </TableCell>
-                            <TableCell className="text-right">
+                            <TableCell>
                                 {formatCurrency(einlage.betrag)}
                             </TableCell>
                             <TableCell>{einlage.geldgeber}</TableCell>
