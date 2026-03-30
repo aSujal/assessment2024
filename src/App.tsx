@@ -9,9 +9,18 @@ import FinanzierungTab from './components/FinanzierungTab'
 function App() {
   const [selectedProjektId, setSelectedProjektId] = useState<string>('')
 
-  const { data: projekte, loading: projekteLoading } = useProjekte()
-  const { data: kategorien, loading: kategorienLoading } = useKategorien()
+  const { data: projekte, loading: projekteLoading, error: projekteError } = useProjekte()
+  const { data: kategorien, loading: kategorienLoading, error: kategorienError } = useKategorien()
   const { getByProjektId, save, update } = useGeldeinlagen()
+
+  if (projekteError || kategorienError) {
+    return (
+      <div className="flex flex-col justify-center items-center h-screen gap-4">
+        <h1 className="text-2xl text-destructive font-bold">Fehler beim Laden</h1>
+        <p className="text-muted-foreground">{projekteError || kategorienError}</p>
+      </div>
+    )
+  }
 
   if (projekteLoading || kategorienLoading) {
     return <div className="flex justify-center items-center h-screen text-2xl text-muted-foreground">Laden...</div>

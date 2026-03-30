@@ -5,7 +5,7 @@ export function validateGeldinlage(data: GeldinlageFormData): ValidationResult {
     if (!data.bezeichnung.trim()) {
         invalidFields.push("Bezeichnung");
     }
-    if (!data.kategorieId || data.kategorieId === "null") {
+    if (!data.kategorieId || data.kategorieId === "leer") {
         invalidFields.push("Kategorie");
     }
     if (!data.datum.trim() || !parseDate(data.datum)) {

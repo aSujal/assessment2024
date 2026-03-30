@@ -6,12 +6,13 @@ const useProjekte = () => {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
+        const controller = new AbortController();
         async function fetchData() {
             try {
                 setLoading(true);
-                const projekteRes = await fetch("/projekte.json");
+                const projekteRes = await fetch("/projekte.json", { signal: controller.signal });
                 console.log(projekteRes)
-                if (!projekteRes) throw new Error("Fehler beim Laden der Daten.");
+                if (!projekteRes.ok) throw new Error("Fehler beim Server Abruf");
 
                 const projekteData: Projekt[] = await projekteRes.json();
                 if (projekteData.length > 0) {
@@ -26,6 +27,7 @@ const useProjekte = () => {
             }
         }
         fetchData();
+        return () => controller.abort();
     }, [])
 
     return { data, loading, error }

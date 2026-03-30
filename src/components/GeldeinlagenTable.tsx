@@ -28,7 +28,6 @@ function GeldeinlagenTable({
     onEdit,
 }: GeldeinlagenTableProps) {
     const getKategorieName = (kategorieId: string): string => {
-        // if (kategorieId === "leer") return "Leer-Eintrag";
         return kategorien.find((k) => k.id === kategorieId)?.name ?? "-";
     };
 

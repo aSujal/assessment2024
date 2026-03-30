@@ -6,12 +6,13 @@ const useKategorien = () => {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
+        const controller = new AbortController();
         async function fetchData() {
             try {
                 setLoading(true);
-                const kategorienRes = await fetch("/kategorien.json");
+                const kategorienRes = await fetch("/kategorien.json", { signal: controller.signal });
 
-                if (!kategorienRes) throw new Error("Fehler beim Laden der Daten.");
+                if (!kategorienRes.ok) throw new Error("Fehler beim Server Abruf");
 
                 const kategorienData: Kategorie[] = await kategorienRes.json();
                 setData(kategorienData ?? []);
@@ -22,6 +23,7 @@ const useKategorien = () => {
             }
         }
         fetchData();
+        return () => controller.abort();
     }, [])
 
     return { data, loading, error }

@@ -1,7 +1,21 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 const useGeldeinlagen = () => {
-    const [geldeinlagen, setGeldeinlagen] = useState<Geldinlage[]>([]);
+    const [geldeinlagen, setGeldeinlagen] = useState<Geldinlage[]>(() => {
+        try {
+            const saved = localStorage.getItem("geldeinlagen");
+            if (!saved) return [];
+
+            const parsed = JSON.parse(saved);
+            return Array.isArray(parsed) ? parsed : [];
+        } catch {
+            return [];
+        }
+    });
+
+    useEffect(() => {
+        localStorage.setItem("geldeinlagen", JSON.stringify(geldeinlagen));
+    }, [geldeinlagen]);
 
     const getByProjektId = useCallback((projektId: string): Geldinlage[] => {
         return geldeinlagen.filter((g) => g.projektId === projektId)
